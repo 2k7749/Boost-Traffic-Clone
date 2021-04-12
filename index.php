@@ -359,11 +359,31 @@ include 'config.php';
                                     </div>
                                     <div class="form-group">
                                         <label for="refheader">Referer header:</label>
-                                        <textarea class="form-control" rows="5" id="refheader" name="refheader" required></textarea>
+                                        <textarea class="form-control" rows="5" id="refheader" name="refheader" required>
+                                            <?php
+                                                $file = fopen("data/referer.txt","r");
+                                                while (!feof($file)) {
+                                                    $line = fgets($file);
+                                                    $txts = explode(';',$line);
+                                                    if(count($txts) == 2){
+                                                        echo $txts[0];
+                                                    }
+                                                    echo '&#13;&#10;';
+                                                }
+                                                fclose($file);
+                                            ?>
+                                        </textarea>
+
                                     </div>
                                     <div class="form-group">
                                         <label for="listua">UserAgent: (RANDOM)</label>
-                                        <textarea class="form-control" rows="5" id="listua" name="listua" required></textarea>
+                                        <textarea class="form-control" rows="5" id="listua" name="listua" required>
+                                            <?php
+                                                $f_contents = file('data/useragents.txt');
+                                                Shuffle($f_contents);
+                                                echo implode(array_slice($f_contents,0,100));
+                                            ?>
+                                        </textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="sockList">List Proxy/Socks4/Socks5/SSH:</label>
