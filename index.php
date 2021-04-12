@@ -474,6 +474,22 @@ include 'config.php';
         }(document, 'script', 'facebook-jssdk'));
     </script>
 	
+	 <script>
+        $('#typeboost').on('change', function() {
+            if ($(this).val() == "singlethread" || $(this).val() == null || $(this).val() == 'Select Type Boost' || $(this).val() == '') {
+                $('#linkboost').show();
+                $('#forlinkboost').show();
+                $('#extralinkboost').hide();
+                $('#forextralist').hide();
+            } else {
+                $('#extralinkboost').show();
+                $('#forextralist').show();
+                $('#linkboost').hide();
+                $('#forlinkboost').hide();
+            }
+        });
+    </script>
+	
 	<!-- FORMAT DATA FROM TEXT FILE -->
 	 <script>
         $(document).ready(function(){
