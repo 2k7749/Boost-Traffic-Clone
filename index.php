@@ -473,6 +473,23 @@ include 'config.php';
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
+	
+	<!-- FORMAT DATA FROM TEXT FILE -->
+	 <script>
+        $(document).ready(function(){
+            $('#linkboost').show();
+            $('#forlinkboost').show();
+
+            var rh = document.getElementById('refheader');
+            rh.value = (rh.value.slice(0,-1) + '');
+
+            var ua = document.getElementById('listua');
+            ua.value = (ua.value.slice(0,-1) + '');
+
+            var lp = document.getElementById('sockslist');
+            lp.value = (lp.value.slice(0,-1) + '');
+        });
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
