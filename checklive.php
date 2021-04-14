@@ -77,7 +77,7 @@ include 'config.php';
         <aside class="navigation">
             <nav>
                 <ul class="nav luna-nav">
-                    <li class="active">
+                    <li class="">
                         <a href="/">Dashboard</a>
                     </li>
 
@@ -87,7 +87,7 @@ include 'config.php';
                         </a>
                         <ul id="monitoring" class="nav nav-second collapse">
                             <li><a href="/"> Traffic Bot</a></li>
-                            <li><a href="checklive.php"> Check Live Proxy/Socks/SSH</a></li>
+                            <li class="active"><a href="#"> Check Live Proxy/Socks/SSH</a></li>
                         </ul>
                     </li>
                     <?php if (isset($_SESSION['id'])) { ?>
@@ -123,7 +123,7 @@ include 'config.php';
                             <div class="header-title">
                                 <h3 class="m-b-xs"><?php echo $page_name; ?></h3>
                                 <small>
-                                   +++ BOOST TRAFFIC TO DIE +++
+                                    Check Live Proxy VIP PRO
                                 </small>
                             </div>
                         </div>
@@ -161,7 +161,7 @@ include 'config.php';
                         `ip` text NOT NULL,
                         PRIMARY KEY (`id`)
                         ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-						");
+                     ");
                         $row = null;
                         $queryFindUser = "
                         SELECT
@@ -346,55 +346,37 @@ include 'config.php';
                                         <a class="panel-toggle"><i class="fa fa-chevron-up"></i></a>
                                         <a class="panel-close"><i class="fa fa-times"></i></a>
                                     </div>
-                                    Bảng Điều Khiển
+                                    CHECK LIVE PROXY/SOCKS/SSH
                                 </div>
+                                <br>
                                 <div class="panel-body">
                                     <p>Hello! <code><?php echo $_SESSION['name']; ?></code> - <code><?php echo $_SESSION['id']; ?></code></p>
                                     <p>Your IP: <code><?php echo $_SERVER['REMOTE_ADDR']; ?></code></p>
                                     <p>Proxy Live Today: <code><?php echo 'NULL'; ?></code></p>
-                                    <form id="nigga" name="nigga" method="POST"> 
+                                    <form method="POST">
                                     <div class="form-group">
-                                        <label id="forlinkboost" for="linkboost" style="display: none;">Website need boost:</label>
-                                        <input type="url" class="form-control" id="linkboost" name="linkboost" placeholder="Website link need Boost (Ex: https://youtube.com/xxxtension)" style="display:none;"></input>
+                                        <label for="proxyList">List Proxy/Socks4/Socks5/SSH:</label>
+                                        <select class="select2_demo_1 form-control select2-hidden-accessible" id="proxyOption" name="proxyoption" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                            <option value="autoproxies" selected>Grab Proxy Online</option>
+                                            <option value="manualproxies">Manual Your Proxy</option>
+                                        </select><br>
+                                        <input class="form-control" id="enumbersock" name="enumbersock" placeholder="Enter Number Socks Need (FREE) (Default = 5 Socks)"></input>
+                                        <button class="btn btn-default" id="getsampleproxies" name="getsampleproxies" type="button" style="display:none;margin-bottom:14px;float: right;"><i class="fa fa-exchange"></i> <span class="bold">Get Sample</span></button>
+                                        <br><textarea class="form-control" rows="5" type="text" name="proxylist" id="proxylist" placeholder="Proxy List : (ex: 62.210.149.33:30175)" style="display:none;" required></textarea>
+                                        <textarea class="form-control" rows="5" type="text" name="proxylivetemp" id="proxylivetemp" style="opacity:0; position: absolute; z-index:-9999; pointer-events: none;"></textarea>
+                                        <br><label for="selecttypes">Select Type:</label><select class="select2_demo_1 form-control select2-hidden-accessible" id="proxyOption" name="proxyoption" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                            <option value="proxy" selected>Proxy</option>
+                                            <option value="socks">Socks</option>
+                                            <option value="ssh">SSH</option>
+                                        </select>
+                                        <br>
+                                        <div class="form-group">
+                                        <label for="linkboost">Timeout:</label>
+                                        <input class="form-control" id="timeoutcheck" name="timeoutcheck" min="20" max="100" value="20" placeholder="Please set timeout to check" required></input>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="refheader">Referer header:</label>
-                                        <textarea class="form-control" rows="5" id="refheader" name="refheader" required><?php
-                                            $file = fopen("data/referer.txt", "r");
-                                            while (!feof($file)) {
-                                                $line = fgets($file);
-                                                $txts = explode(';', $line);
-                                                if (count($txts) == 2) {
-                                                    echo $txts[0];
-                                                }
-                                                echo '&#13;&#10;';
-                                            }
-                                            fclose($file);
-                                            ?></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="listua">UserAgent: (RANDOM)</label>
-                                        <textarea class="form-control" rows="5" id="listua" name="listua" required><?php
-                                            $f_contents = file("data/useragents.txt");
-                                            Shuffle($f_contents);
-                                            echo implode(array_slice($f_contents, 0, 100));
-                                            ?></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="sockList">List Proxy/Socks4/Socks5/SSH:</label>
-                                        <br><textarea class="form-control" rows="5" type="text" name="sockslist" id="sockslist" placeholder="Proxy List : (ex: 62.210.149.33:30175)" required></textarea>
-                                    </div>
-                                    <select class="select2_demo_1 form-control select2-hidden-accessible" id="typeboost" name="typeboost" style="width: 100%" tabindex="-1" aria-hidden="true">
-                                            <option value="" selected>Select Type Boost</option>
-                                            <option value="singlethread">Single Thread</option>
-                                            <option value="multithread">Multiple Thread</option>
-                                    </select>
-                                    <br>
-                                    <label id="forextralist" for="extralist" style="display: none;">List Proxy/Socks4/Socks5/SSH:</label>
-                                    <textarea class="form-control" rows="5" type="text" name="extralinkboost" id="extralinkboost" placeholder="Extra List Link Boost (https://youtube.com/product-1,2,3,4,5)" style="display:none;"></textarea>
-                                    <br>
                                     <div class="text-center">
-                                        <button class="btn btn-w-md btn-success">BOOST NOW!</button>
+                                        <button type="submit" class="btn btn-w-md btn-primary"><i class="fa fa-spinner fa-spin"></i> CHECK LIVE NOW!</button>
                                     </div>
                                     </form>
                                 </div>
@@ -409,33 +391,54 @@ include 'config.php';
                                     <a class="panel-toggle"><i class="fa fa-chevron-up"></i></a>
                                     <a class="panel-close"><i class="fa fa-times"></i></a>
                                 </div>
-                                Live Tracking Payload Here
+                                Proxy/Socks/SSH Result
                             </div>
                             <div class="panel-body">
-                                <p>Log was <code>display</code> here, u can check it now.</p>
+                                <p><code>LIVE PROXY</code> 'll Display here, you can export to using to boost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-default buttons-copy buttons-html5 btn-sm" tabindex="0" aria-controls="tableExample3" onclick="copyliveproxy()">Copy Live Proxy</button></p>
+                                
                                 <div class="table-responsive">
-                                    <div class="outer-big">
-                                        <table class="table table-hover table-striped">
+                                    <div class="outer">
+                                        <table id="tblaftercheck" class="table table-hover table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>Proxy</th>
-                                                    <th>Referer From</th>
-                                                    <th>Status</th>
+                                                    <th>IP Address</th>
+                                                    <th>Speed</th>
+                                                    <th>Status - (Type)</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="rowdataresponse">
+                                            <tbody id="rowdatacheck">
+                                                
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
+                            <div class="panel-body">
+                            <p><code>DIE PROXY</code> 'll Display here</p>
+                                <div class="table-responsive">
+                                    <div class="outer">
+                                        <table id="tblaftercheckdie" class="table table-hover table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>IP Address</th>
+                                                    <th>Speed</th>
+                                                    <th>Status - (Type)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="rowdatacheckdie">
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
 
                 </div>
-             
+
 
             </div>
         </section>
@@ -471,124 +474,121 @@ include 'config.php';
 
     <!-- Customize JS -->
     <script>
-        $("#nigga").submit(function (event) {
-            event.preventDefault();
-            var siteBoost = $("#linkboost").val();
-            var extraLinkBoost = $("#extralinkboost").val().split(/\r\n|\n|\r/);
-            var refHeader = $("#refheader").val().split(/\r\n|\n|\r/);
-            var listUA = $("#listua").val().split(/\r\n|\n|\r/);
-            var socksList = $("#sockslist").val().split(/\r\n|\n|\r/);
-            var typeBoost = $("#typeboost").val();
-            if(typeBoost == null || typeBoost == 'Select Type Boost' || typeBoost == ''){
-                toastr.warning('OOPS!!', 'Please select TypeBoost', {timeOut: 3000});
-            }else{
-                toastr.success('BOOOOM!!', 'Let\'s go to Boost', {timeOut: 3000});
-                //BOOOST
-                for (i = 0; i < socksList.length; i++) {
-                    //RefererHeader
-                    var eachRefHeader = refHeader[i];
-                    //UserAgent
-                    var eachUA = listUA[i];
-                    //Proxy/SOCK
-                    var eachSocks = socksList[i];
-
-                    (function(x){
-                        console.log(typeBoost);
-                        if(typeBoost == 'singlethread'){
-                            $.ajax({
-                            url: 'actions/boost.php?typeboost=' + typeBoost + '&refheader=' + eachRefHeader + '&ua=' + eachUA + '&socksdame=' + eachSocks + '&siteboost=' + siteBoost,
-                            type: 'POST',
-                            success: function (data) {
-                                var obj = JSON.parse(data);
-                                var resSocks = '<td style="color:#00ff95;">' +obj.result.socks+ '</td>';
-                                var resRef = '<td style="color:#f79cfd;">' +obj.result.referer+ '</td>';
-                                if(obj.result.success == true){
-                                    var status = '<td style="color:#27ff00;">' +obj.result.message+ '</td>';
-                                }else{
-                                    var status = '<td style="color:#ffff03;">' +obj.result.message+ '</td>';
-                                }
-                                
-
-                                var htmlData = '<tr>'+ resSocks  + resRef + status +'</tr>';
-                                $("#rowdataresponse").append($(htmlData));
-                            },
-                            error: function(){
-                                toastr.warning('OOPS!!', 'Something Wrong', {timeOut: 3000});
-                            },
-                            });
-                        }
-                        else if(typeBoost == 'multithread'){
-                            $.ajax({
-                            url: 'actions/boost.php?typeboost=' + typeBoost + '&refheader=' + eachRefHeader + '&ua=' + eachUA + '&socksdame=' + eachSocks + '&extralinkboost=' + extraLinkBoost,
-                            type: 'POST',
-                            success: function (data) {
-                                var obj = JSON.parse(data);
-                                
-                                for(iobj = 0; iobj<obj.length; iobj++){
-                                    var resSocks = '<td style="color:#ff006a;">' +obj[iobj]['result']['socks']+ '</td>';
-                                    var resRef = '<td style="color:#40d3ff;">' +obj[iobj]['result']['referer']+ '</td>';
-                                    if(obj[iobj]['result']['success'] == true){
-                                        var status = '<td style="color:#03ffae;">' +obj[iobj]['result']['message']+ '</td>';
-                                    }else{
-                                        var status = '<td style="color:#ffff03;">' +obj[iobj]['result']['message']+ '</td>';
-                                    }
-                                    
-
-                                    var htmlData = '<tr>'+ resSocks  + resRef + status +'</tr>';
-                                    $("#rowdataresponse").append($(htmlData));
-                                }
-
-                                
-                            },
-                            error: function(){
-                                toastr.warning('OOPS!!', 'Something Wrong', {timeOut: 3000});
-                            },
-                            });
-                        }
-                        else{
-                            alert('SOKAY');
-                        }
-                        
-                    })(i)
-                }
-            }
-            
-           
-
-
-           // console.log(siteboost);
-          // console.log(typeboost);
-        });
-    </script>
-    <script>
-        $('#typeboost').on('change', function() {
-            if ($(this).val() == "singlethread" || $(this).val() == null || $(this).val() == 'Select Type Boost' || $(this).val() == '') {
-                $('#linkboost').show();
-                $('#forlinkboost').show();
-                $('#extralinkboost').hide();
-                $('#forextralist').hide();
+        $('#proxyOption').on('change', function() {
+            if ($(this).val() == "autoproxies") {
+                $('#proxylist').hide();
+                $('#enumbersock').show();
+                $('#getsampleproxies').hide();
             } else {
-                $('#extralinkboost').show();
-                $('#forextralist').show();
-                $('#linkboost').hide();
-                $('#forlinkboost').hide();
+                $('#enumbersock').hide();
+                $('#getsampleproxies').show();
+                $('#proxylist').show();
             }
         });
     </script>
+
     <script>
-        $(document).ready(function(){
-            $('#linkboost').show();
-            $('#forlinkboost').show();
+        const proxylive = [];
+        $("form").submit(function (event) {
+            event.preventDefault();
+            toastr.success('BOOOOM!!', 'Everything SoKay, Let\'s go', {timeOut: 3000})
+            var timeout = $("#timeoutcheck").val();
+            var list = $("#proxylist").val().split(/\r\n|\n|\r/);
+            
+            for (i = 0; i < list.length; i++) {
+                var splitip = "";
+                var splitport = "";
+                var split = list[i].split(':');
+                splitip = split[0];
+                splitport = split[1];
+                (function(x){
+                    $.ajax({
+                        url: 'actions/checkproxy.php?ip=' + splitip + '&port=' + splitport + '&timeout=' + timeout,
+                        type: 'POST',
+                        success: function (data) {
+                            //$("p").append(data);
+                            var obj = JSON.parse(data);
+                            var ipport = '<td style="color:#ff0066;">'+obj.result.proxy.ip+':'+obj.result.proxy.port+ '</td>';
+                            var speedCal = ((obj.result.proxy.speed % 60000) / 1000).toFixed(1);
 
-            var rh = document.getElementById('refheader');
-            rh.value = (rh.value.slice(0,-1) + '');
+                            if(speedCal <= 5){
+                                var speed = '<td style="color: #33cc33;">'+speedCal+' (s)</td>';
+                            }else if(speedCal > 5 && speedCal < 10){
+                                var speed = '<td style="color: #ffcc00;">'+speedCal+' (s)</td>';
+                            }else if(speedCal = "NaN"){
+                                var speed = '<td style="color: #8c8c8c;">'+speedCal+' (s)</td>';
+                            }else{
+                                var speed = '<td style="color: #ff3300;">'+speedCal+' (s)</td>';
+                            }
 
-            var ua = document.getElementById('listua');
-            ua.value = (ua.value.slice(0,-1) + '');
+                            if(obj.result.success == true){
+                                var statustype = '<td><font color="#66ffff">TRUE</font> - <font color="white">'+obj.result.proxy.type+'</font></td>';
+                                var htmlData = '<tr>'+ ipport  + speed + statustype +'</tr>';
+                                $("#rowdatacheck").append($(htmlData));
+                                $("#proxylivetemp").append((obj.result.proxy.ip+':'+obj.result.proxy.port+"&#13;&#10;"));
+                            }else{
+                                var statustype = '<td><font color="#ff3333">FALSE</font> - <font color="white">'+obj.result.proxy.type+'</font></td>';
+                                var htmlData = '<tr>'+ ipport  + speed + statustype +'</tr>';
+                                $("#rowdatacheckdie").append($(htmlData));
+                            }
+                            
+                            // var htmlData = '<tr>'+ ipport  + speed + statustype +'</tr>';
 
-            var lp = document.getElementById('sockslist');
-            lp.value = (lp.value.slice(0,-1) + '');
+                            // $("#rowdatacheck").append($(htmlData));
+                        },
+                        error: function(){
+                                toastr.warning('OOPS!!', 'Something Wrong', {timeOut: 3000});
+                        },
+                        });
+                })(i)
+                }
+              
+                
+            // var formData = new FormData(this);
+
+            // $.ajax({
+            // url: 'actions/checkproxy.php',
+            // type: 'POST',
+            // data: {
+                
+            // },
+            // success: function (data) {
+            //     //$("p").append(data);
+            //     alert(data);
+            // },
+            // cache: false,
+            // contentType: false,
+            // processData: false
+            // });
         });
+    </script>
+    
+    <script>
+    function copyliveproxy() {
+        var txt=document.getElementById("proxylivetemp");
+        txt.select();
+        txt.setSelectionRange(0, 999999)
+        document.execCommand("copy");
+        toastr.success('BOOOM!!', 'Copied the Live Proxy, Thanks', {timeOut: 3000});
+    }
+    $("#getsampleproxies").click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: 'actions/grabproxy.php',
+            type: 'POST',
+            data: {
+                
+            },
+            success: function (data) {
+               /// var htmlData =  $.parseHTML(data);
+                //alert(data);
+                //$(htmlData).appendTo('#proxylist');
+                var htmlData = data.replace(/<br\s*\/?>/mg,"\n");
+                $("#proxylist").html(htmlData);
+            },
+            });
+    });
+    
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
