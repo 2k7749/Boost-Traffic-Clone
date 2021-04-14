@@ -46,4 +46,20 @@ function freeproxylist()
     $info = curl_getinfo($ch);
     curl_close($ch);
 }
+
+function proxy_db(){
+	$source = file_get_contents('http://proxydb.net/?protocol=https&country=');
+    preg_match_all('/<tbody>(.*?)<\/tbody>/is', $source, $matches);
+    preg_match_all('/<tr>(.*?)<\/tr>/is', $matches[1][0], $matches);
+    $return = array();
+    foreach ($matches[1] as $key => $val) {
+        preg_match_all('/<td>(.*?)<\/td>/is', $val, $m);
+		$temp_strip = strip_tags($m[0][0]);
+        $return[] = "{$temp_strip}";
+    }
+    return $return;
+}
+
+
+//echo '<html>' . str_replace(',', '<br>',implode(',', proxy_db())) . '</html>';
 print str_replace(' ', '<br>', implode(' ', fetch_proxies()));

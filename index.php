@@ -352,38 +352,33 @@ include 'config.php';
                                     <p>Hello! <code><?php echo $_SESSION['name']; ?></code> - <code><?php echo $_SESSION['id']; ?></code></p>
                                     <p>Your IP: <code><?php echo $_SERVER['REMOTE_ADDR']; ?></code></p>
                                     <p>Proxy Live Today: <code><?php echo 'NULL'; ?></code></p>
-                                    <form method="POST"> 
+                                    <form id="nigga" name="nigga" method="POST"> 
                                     <div class="form-group">
                                         <label id="forlinkboost" for="linkboost" style="display: none;">Website need boost:</label>
                                         <input type="url" class="form-control" id="linkboost" name="linkboost" placeholder="Website link need Boost (Ex: https://youtube.com/xxxtension)" style="display:none;"></input>
                                     </div>
                                     <div class="form-group">
                                         <label for="refheader">Referer header:</label>
-                                        <textarea class="form-control" rows="5" id="refheader" name="refheader" required>
-                                            <?php
-                                                $file = fopen("data/referer.txt","r");
-                                                while (!feof($file)) {
-                                                    $line = fgets($file);
-                                                    $txts = explode(';',$line);
-                                                    if(count($txts) == 2){
-                                                        echo $txts[0];
-                                                    }
-                                                    echo '&#13;&#10;';
+                                        <textarea class="form-control" rows="5" id="refheader" name="refheader" required><?php
+                                            $file = fopen("data/referer.txt", "r");
+                                            while (!feof($file)) {
+                                                $line = fgets($file);
+                                                $txts = explode(';', $line);
+                                                if (count($txts) == 2) {
+                                                    echo $txts[0];
                                                 }
-                                                fclose($file);
-                                            ?>
-                                        </textarea>
-
+                                                echo '&#13;&#10;';
+                                            }
+                                            fclose($file);
+                                            ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="listua">UserAgent: (RANDOM)</label>
-                                        <textarea class="form-control" rows="5" id="listua" name="listua" required>
-                                            <?php
-                                                $f_contents = file('data/useragents.txt');
-                                                Shuffle($f_contents);
-                                                echo implode(array_slice($f_contents,0,100));
-                                            ?>
-                                        </textarea>
+                                        <textarea class="form-control" rows="5" id="listua" name="listua" required><?php
+                                            $f_contents = file("data/useragents.txt");
+                                            Shuffle($f_contents);
+                                            echo implode(array_slice($f_contents, 0, 100));
+                                            ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="sockList">List Proxy/Socks4/Socks5/SSH:</label>
@@ -473,8 +468,99 @@ include 'config.php';
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-	
-	 <script>
+
+    <!-- Customize JS -->
+    <script>
+        $("#nigga").submit(function (event) {
+            event.preventDefault();
+            var siteBoost = $("#linkboost").val();
+            var extraLinkBoost = $("#extralinkboost").val().split(/\r\n|\n|\r/);
+            var refHeader = $("#refheader").val().split(/\r\n|\n|\r/);
+            var listUA = $("#listua").val().split(/\r\n|\n|\r/);
+            var socksList = $("#sockslist").val().split(/\r\n|\n|\r/);
+            var typeBoost = $("#typeboost").val();
+            if(typeBoost == null || typeBoost == 'Select Type Boost' || typeBoost == ''){
+                toastr.warning('OOPS!!', 'Please select TypeBoost', {timeOut: 3000});
+            }else{
+                toastr.success('BOOOOM!!', 'Let\'s go to Boost', {timeOut: 3000});
+                //BOOOST
+                for (i = 0; i < socksList.length; i++) {
+                    //RefererHeader
+                    var eachRefHeader = refHeader[i];
+                    //UserAgent
+                    var eachUA = listUA[i];
+                    //Proxy/SOCK
+                    var eachSocks = socksList[i];
+
+                    (function(x){
+                        console.log(typeBoost);
+                        if(typeBoost == 'singlethread'){
+                            $.ajax({
+                            url: 'actions/boost.php?typeboost=' + typeBoost + '&refheader=' + eachRefHeader + '&ua=' + eachUA + '&socksdame=' + eachSocks + '&siteboost=' + siteBoost,
+                            type: 'POST',
+                            success: function (data) {
+                                var obj = JSON.parse(data);
+                                var resSocks = '<td style="color:#00ff95;">' +obj.result.socks+ '</td>';
+                                var resRef = '<td style="color:#f79cfd;">' +obj.result.referer+ '</td>';
+                                if(obj.result.success == true){
+                                    var status = '<td style="color:#27ff00;">' +obj.result.message+ '</td>';
+                                }else{
+                                    var status = '<td style="color:#ffff03;">' +obj.result.message+ '</td>';
+                                }
+                                
+
+                                var htmlData = '<tr>'+ resSocks  + resRef + status +'</tr>';
+                                $("#rowdataresponse").append($(htmlData));
+                            },
+                            error: function(){
+                                toastr.warning('OOPS!!', 'Something Wrong', {timeOut: 3000});
+                            },
+                            });
+                        }
+                        else if(typeBoost == 'multithread'){
+                            $.ajax({
+                            url: 'actions/boost.php?typeboost=' + typeBoost + '&refheader=' + eachRefHeader + '&ua=' + eachUA + '&socksdame=' + eachSocks + '&extralinkboost=' + extraLinkBoost,
+                            type: 'POST',
+                            success: function (data) {
+                                var obj = JSON.parse(data);
+                                
+                                for(iobj = 0; iobj<obj.length; iobj++){
+                                    var resSocks = '<td style="color:#ff006a;">' +obj[iobj]['result']['socks']+ '</td>';
+                                    var resRef = '<td style="color:#40d3ff;">' +obj[iobj]['result']['referer']+ '</td>';
+                                    if(obj[iobj]['result']['success'] == true){
+                                        var status = '<td style="color:#03ffae;">' +obj[iobj]['result']['message']+ '</td>';
+                                    }else{
+                                        var status = '<td style="color:#ffff03;">' +obj[iobj]['result']['message']+ '</td>';
+                                    }
+                                    
+
+                                    var htmlData = '<tr>'+ resSocks  + resRef + status +'</tr>';
+                                    $("#rowdataresponse").append($(htmlData));
+                                }
+
+                                
+                            },
+                            error: function(){
+                                toastr.warning('OOPS!!', 'Something Wrong', {timeOut: 3000});
+                            },
+                            });
+                        }
+                        else{
+                            alert('SOKAY');
+                        }
+                        
+                    })(i)
+                }
+            }
+            
+           
+
+
+           // console.log(siteboost);
+          // console.log(typeboost);
+        });
+    </script>
+    <script>
         $('#typeboost').on('change', function() {
             if ($(this).val() == "singlethread" || $(this).val() == null || $(this).val() == 'Select Type Boost' || $(this).val() == '') {
                 $('#linkboost').show();
@@ -489,9 +575,7 @@ include 'config.php';
             }
         });
     </script>
-	
-	<!-- FORMAT DATA FROM TEXT FILE -->
-	 <script>
+    <script>
         $(document).ready(function(){
             $('#linkboost').show();
             $('#forlinkboost').show();
@@ -506,7 +590,6 @@ include 'config.php';
             lp.value = (lp.value.slice(0,-1) + '');
         });
     </script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 

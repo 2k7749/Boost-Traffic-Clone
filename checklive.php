@@ -123,7 +123,7 @@ include 'config.php';
                             <div class="header-title">
                                 <h3 class="m-b-xs"><?php echo $page_name; ?></h3>
                                 <small>
-                                    Phiên bản Bot 1.0 dùng token, token dễ bị die nên lấy luôn bộ source trên mạng này để chạy cho tiện kkk
+                                    Check Live Proxy VIP PRO
                                 </small>
                             </div>
                         </div>
